@@ -10,6 +10,7 @@ mydb = mysql.connector.connect(
 cursor = mydb.cursor()
 
 cursor.execute("CREATE TABLE Events (id VARCHAR(100) NOT NULL, \
+        sport VARCHAR(100) NOT NULL, \
         team1 VARCHAR(100) NOT NULL, \
         team2 VARCHAR(100) NOT NULL, \
         dt DATETIME NOT NULL, \
