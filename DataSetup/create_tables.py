@@ -13,19 +13,13 @@ cursor.execute("CREATE TABLE Events (id VARCHAR(100) NOT NULL, \
         sport VARCHAR(100) NOT NULL, \
         team1 VARCHAR(100) NOT NULL, \
         team2 VARCHAR(100) NOT NULL, \
-        dt DATETIME NOT NULL, \
+        dt VARCHAR(20) NOT NULL, \
         PRIMARY KEY(id))")
 
-cursor.execute("CREATE TABLE Spreads (id INT NOT NULL AUTO_INCREMENT, \
-        eventID VARCHAR(100) NOT NULL, \
-        spread SMALLINT NOT NULL, \
-        posSpreadID INT NOT NULL, \
-        negSpreadID INT NOT NULL, \
-        PRIMARY KEY (id), \
-        FOREIGN KEY (eventID) REFERENCES Events(id))")
 
-cursor.execute("CREATE TABLE PosOdds (id INT NOT NULL AUTO_INCREMENT, \
-    spreadID INT NOT NULL, \
+cursor.execute("CREATE TABLE OverDog (id INT NOT NULL AUTO_INCREMENT, \
+    eventID VARCHAR(100) NOT NULL, \
+    spread FLOAT NOT NULL, \
     betonlineag FLOAT, \
     betmgm FLOAT, \
     betrivers FLOAT, \
@@ -49,10 +43,11 @@ cursor.execute("CREATE TABLE PosOdds (id INT NOT NULL AUTO_INCREMENT, \
     tipico_us FLOAT, \
     windcreek FLOAT, \
     PRIMARY KEY (id), \
-    FOREIGN KEY (spreadID) REFERENCES Spreads(id))")
+    FOREIGN KEY (eventID) REFERENCES Events(id))")
 
-cursor.execute("CREATE TABLE NegOdds (id INT NOT NULL AUTO_INCREMENT, \
-    spreadID INT NOT NULL, \
+cursor.execute("CREATE TABLE UnderDog (id INT NOT NULL AUTO_INCREMENT, \
+    eventID VARCHAR(100) NOT NULL, \
+    spread FLOAT NOT NULL, \
     betonlineag FLOAT, \
     betmgm FLOAT, \
     betrivers FLOAT, \
@@ -76,22 +71,20 @@ cursor.execute("CREATE TABLE NegOdds (id INT NOT NULL AUTO_INCREMENT, \
     tipico_us FLOAT, \
     windcreek FLOAT, \
     PRIMARY KEY (id), \
-    FOREIGN KEY (spreadID) REFERENCES Spreads(id))")
+    FOREIGN KEY (eventID) REFERENCES Events(id))")
 
 
 cursor.execute("DESCRIBE Events")
 for x in cursor:
     print(x)
 
-cursor.execute("DESCRIBE Spreads")
+cursor.execute("DESCRIBE OverDog")
 for x in cursor:
     print(x)
 
-cursor.execute("DESCRIBE PosOdds")
+cursor.execute("DESCRIBE UnderDog")
 for x in cursor:
     print(x)
 
-cursor.execute("DESCRIBE NegOdds")
-for x in cursor:
-    print(x)
+mydb.commit()
 

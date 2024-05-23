@@ -12,7 +12,8 @@ def get_in_season_sports() -> list:
     sports_response = requests.get(
         'https://api.the-odds-api.com/v4/sports', 
         params={
-            'api_key': API_KEY
+            'api_key': API_KEY,
+            'outrights': 'false'
         }
     )
     
@@ -25,7 +26,7 @@ def get_in_season_sports() -> list:
         return sports
 
 
-def get_event_ids(sport: str):
+def get_event_ids(sport: str) -> list:
     http_request = f'https://api.the-odds-api.com/v4/sports/{sport}/events'
     dt = datetime.datetime.now().replace(microsecond=0).isoformat()
     time_from = f'{dt}Z'
@@ -43,41 +44,27 @@ def get_event_ids(sport: str):
     else:
         event_ids = []
         for event in event_response.json():
-            event_ids.append(event['id'])
+            event_dict = {'id': event['id'], 'team1': event['home_team'], 'team2': event['away_team'], 'dt': event['commence_time']}
+            event_ids.append(event_dict)
         return event_ids
 
 
-def get_event_odds(sport:str, eventId: str) -> dict:
+def get_event_odds(sport:str, eventId: str) -> list:
     http_request = f'https://api.the-odds-api.com/v4/sports/{sport}/events/{eventId}/odds?apiKey={API_KEY}&regions={REGIONS}&markets={MARKETS}&dateFormat={DATE_FORMAT}&oddsFormat={ODDS_FORMAT}'
     odds_response = requests.get(http_request)
 
     if odds_response.status_code != 200:
         print(f'Failed to get sports: status_code {odds_response.status_code}, response body {odds_response.text}')
     else:
-        prices = []
-        points = []
+        odds = []
         for bookmaker in odds_response.json()['bookmakers']:
+            bookmaker_key = bookmaker['key']
             outcomes = bookmaker['markets'][0]['outcomes']
             for outcome in outcomes:
                 price = outcome['price']
-                point = outcome['point']
-                prices.append(price)
-                points.append(point)
-                # print(f'Price:{price}')
-                # print(f'Point:{point}')
-                # print()
-    return {'prices': prices, 'points': points}
+                point = outcome['point']       
+                odds.append({'bookmaker': bookmaker_key, 'price': price, 'line': point})
+        return odds
 
 if __name__ == "__main__":
-    # for sport in get_in_season_sports():
-    #     for event in get_event_ids(sport):
-    #         get_event_odds(sport, event)
-    get_event_odds('americanfootball_ncaaf', '329ee4daba3514dce8018d5768e5043f')
-
-def compile_event_ids() -> list:
-    ids = []
-    for sport in get_in_season_sports():
-        for id in get_event_ids(sport):
-            ids.append(id)
-
-    return ids
+    pass
