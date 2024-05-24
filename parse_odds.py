@@ -1,12 +1,15 @@
 import requests
-import datetime
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
-API_KEY = '572ebdf0a5246419c13bf503b00cefaf'
+API_KEY = '7765fab0d40bbcf156b6c01896c8b364'
 SPORTS = 'upcoming'
-REGIONS = 'us,us2'
+REGIONS = 'us,us2,uk,au,eu'
 MARKETS = 'alternate_spreads'
 ODDS_FORMAT = 'decimal'
 DATE_FORMAT = 'iso'
+
+counter = 0
 
 def get_in_season_sports() -> list:
     sports_response = requests.get(
@@ -28,14 +31,14 @@ def get_in_season_sports() -> list:
 
 def get_event_ids(sport: str) -> list:
     http_request = f'https://api.the-odds-api.com/v4/sports/{sport}/events'
-    dt = datetime.datetime.now().replace(microsecond=0).isoformat()
-    time_from = f'{dt}Z'
+    dt_from = datetime.now().replace(microsecond=0).isoformat()
+    time_from = f'{dt_from}Z'
     event_response = requests.get(
         http_request,
         params={
             'api_key': API_KEY,
             'dateFormat': DATE_FORMAT,
-            'commenceTimeFrom': time_from
+            'commenceTimeFrom': time_from,
         }
     )
 
@@ -52,7 +55,6 @@ def get_event_ids(sport: str) -> list:
 def get_event_odds(sport:str, eventId: str) -> list:
     http_request = f'https://api.the-odds-api.com/v4/sports/{sport}/events/{eventId}/odds?apiKey={API_KEY}&regions={REGIONS}&markets={MARKETS}&dateFormat={DATE_FORMAT}&oddsFormat={ODDS_FORMAT}'
     odds_response = requests.get(http_request)
-
     if odds_response.status_code != 200:
         print(f'Failed to get sports: status_code {odds_response.status_code}, response body {odds_response.text}')
     else:
@@ -62,9 +64,10 @@ def get_event_odds(sport:str, eventId: str) -> list:
             outcomes = bookmaker['markets'][0]['outcomes']
             for outcome in outcomes:
                 price = outcome['price']
-                point = outcome['point']       
-                odds.append({'bookmaker': bookmaker_key, 'price': price, 'line': point})
+                point = outcome['point']
+                team = outcome['name']     
+                odds.append({'bookmaker': bookmaker_key, 'price': price, 'line': point, 'team': team})
         return odds
 
 if __name__ == "__main__":
-    pass
+    get_event_odds('soccer_usa_mls', '949934828dfdceb424db91b212cac7b7')
