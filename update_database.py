@@ -92,9 +92,15 @@ def get_arbitrage() -> str:
     return arbs
 
 def update_all():
+    print("Clearing Tables... (0/3) ")
     clear_tables()
+    print("Tables Cleared. (1/3)")
+    print("Updating Event & Spread Data... (1/3) ")
     update_data()
+    print("Event & Spread Data Updated. (2/3) ")
+    print("Updating Arbitrage Data... (2/3) ")
     update_arbitrage()
+    print("Arbitrage Data Updated. (3/3) ")
 
 if __name__ == '__main__':
     # update_data()
