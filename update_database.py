@@ -27,8 +27,6 @@ def check_exists(team1: bool, eventID: str, line: float) -> bool:
         return len(cursor.fetchall())>0
 
 def update_data():
-    clear_tables()
-
     for sport in parse_odds.get_in_season_sports():
         for event in parse_odds.get_event_ids(sport):
             id = event['id']
@@ -77,38 +75,45 @@ def update_arbitrage():
         underdog_odds = list(entry[5][:-1].split(" "))
         underdog_books = list(entry[6][:-1].split(" "))
         for i in range(len(favorite_odds)):
-            for i in range(len(underdog_odds)):
-                profit_percentage = 1 - ((1.0/float(favorite_odds[i])) + (1.0/float(underdog_odds[i])))
-                print(profit_percentage)
+            for j in range(len(underdog_odds)):
+                profit_percentage = 1 - ((1.0/float(favorite_odds[i])) + (1.0/float(underdog_odds[j])))
                 if (profit_percentage > 0):
                     cursor.execute("INSERT INTO Arbs (sport, eventID, spread, oddFavorite, bookFavorite, oddUnderdog, bookUnderdog, profitPercentage) \
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (sport, id, line, favorite_odds[i], favorite_books[i], \
-                        underdog_odds[i], underdog_books[i], profit_percentage))
+                        underdog_odds[j], underdog_books[j], profit_percentage))
+    mydb.commit()
 
+def get_arbitrage() -> str:
+    arbs = ''
+    cursor.execute("SELECT * FROM Arbs")
+    for arb in cursor:
+        if arb[8] > 0.005:
+            arbs = arbs + str(arb) + '\n'
+    return arbs
 
-
-
+def update_all():
+    clear_tables()
+    update_data()
+    update_arbitrage()
 
 if __name__ == '__main__':
     # update_data()
-
     # update_arbitrage()
-    # cursor.execute("SELECT * FROM Arbs")
+    print(get_arbitrage())
+
+    # cursor.execute("SELECT * FROM Events WHERE id = '949934828dfdceb424db91b212cac7b7'")
+    # print(cursor.fetchall())
+    # cursor.execute("SELECT * FROM team1odds WHERE eventID = '949934828dfdceb424db91b212cac7b7'")
+    # for x in cursor:
+    #     print(x)
+    # print("\n \n")
+    # cursor.execute("SELECT * FROM team2odds WHERE eventID = '949934828dfdceb424db91b212cac7b7'")
     # for x in cursor:
     #     print(x)
 
-    cursor.execute("SELECT * FROM Events WHERE id = '949934828dfdceb424db91b212cac7b7'")
-    print(cursor.fetchall())
-    cursor.execute("SELECT * FROM team1odds WHERE eventID = '949934828dfdceb424db91b212cac7b7'")
-    for x in cursor:
-        print(x)
-    print("\n \n")
-    cursor.execute("SELECT * FROM team2odds WHERE eventID = '949934828dfdceb424db91b212cac7b7'")
-    for x in cursor:
-        print(x)
-
     # cursor.execute("SELECT COUNT(*) FROM Events")
     # print(cursor.fetchall())
+    # print("\n \n")
     # cursor.execute("SELECT COUNT(*) FROM team1odds")
     # print(cursor.fetchall())
     # cursor.execute("SELECT COUNT(*) FROM team2odds")
