@@ -84,7 +84,7 @@ def update_arbitrage():
     mydb.commit()
 
 def save_historical_arbitrage(profit_percentage: float):
-    dt = datetime.now()
+    dt = datetime.datetime.now()
     cursor.execute("INSERT INTO Historical (profitPercentage, dt) VALUES (%s, %s)", (profit_percentage*100, dt))
     mydb.commit()
 
@@ -93,10 +93,11 @@ def get_arbitrage() -> str:
     max_profit_percentage = 0
     cursor.execute("SELECT * FROM Arbs")
     for arb in cursor:
+        print(arb)
         max_profit_percentage = max(max_profit_percentage, arb[8])
         if arb[8] > 0.005:
             arbs = arbs + str(arb) + '\n'
-    if(max_profit_percentage >= 0.5):
+    if(max_profit_percentage >= 0.005):
         save_historical_arbitrage(max_profit_percentage)
     return arbs
 
@@ -114,7 +115,6 @@ def update_all():
 if __name__ == '__main__':
     # update_data()
     # update_arbitrage()
-    print(get_arbitrage())
 
     # cursor.execute("SELECT * FROM Events WHERE id = '949934828dfdceb424db91b212cac7b7'")
     # print(cursor.fetchall())
@@ -135,3 +135,7 @@ if __name__ == '__main__':
     # print(cursor.fetchall())
     # cursor.execute("SELECT COUNT(*) FROM team1odds INNER JOIN team2odds ON team1odds.spread = - team2odds.spread AND team1odds.eventID = team2odds.eventID")
     # print(cursor.fetchall())
+
+    print(get_arbitrage())
+    cursor.execute("SELECT * FROM Historical")
+    print(cursor.fetchall())
