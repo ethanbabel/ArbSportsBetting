@@ -83,12 +83,21 @@ def update_arbitrage():
                         underdog_odds[j], underdog_books[j], profit_percentage))
     mydb.commit()
 
+def save_historical_arbitrage(profit_percentage: float):
+    dt = datetime.now()
+    cursor.execute("INSERT INTO Historical (profitPercentage, dt) VALUES (%s, %s)", (profit_percentage*100, dt))
+    mydb.commit()
+
 def get_arbitrage() -> str:
     arbs = ''
+    max_profit_percentage = 0
     cursor.execute("SELECT * FROM Arbs")
     for arb in cursor:
+        max_profit_percentage = max(max_profit_percentage, arb[8])
         if arb[8] > 0.005:
             arbs = arbs + str(arb) + '\n'
+    if(max_profit_percentage >= 0.5):
+        save_historical_arbitrage(max_profit_percentage)
     return arbs
 
 def update_all():

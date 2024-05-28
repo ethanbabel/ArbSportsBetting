@@ -15,9 +15,9 @@ cursor.execute("SELECT TABLE_NAME \
         FROM INFORMATION_SCHEMA.TABLES \
         WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='ArbSportsBetting' ")
 tables = cursor.fetchall()
-
 for table in tables:
-    cursor.execute(f"DROP TABLE {table[0]}")
+    if not(table[0] == 'Historical'):
+        cursor.execute(f"DROP TABLE {table[0]}")
 
 cursor.execute("SHOW TABLES")
 for table in cursor: 

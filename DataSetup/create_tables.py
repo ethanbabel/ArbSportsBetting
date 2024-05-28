@@ -47,6 +47,10 @@ cursor.execute("CREATE TABLE Arbs (id INT NOT NULL AUTO_INCREMENT, \
     PRIMARY KEY (id), \
     FOREIGN KEY (eventID) REFERENCES Events(id))")
 
+cursor.execute("CREATE TABLE Historical (id INT NOT NULL AUTO_INCREMENT, \
+    profitPercentage FLOAT NOT NULL, \
+    dt VARCHAR(20) NOT NULL, \
+    PRIMARY KEY (id))")
 
 cursor.execute("DESCRIBE Events")
 for x in cursor:
@@ -64,27 +68,8 @@ cursor.execute("DESCRIBE Arbs")
 for x in cursor:
     print(x)
 
-mydb.commit()
+cursor.execute("DESCRIBE Historical")
+for x in cursor:
+    print(x)
 
-#     betonlineag FLOAT, \
-#     betmgm FLOAT, \
-#     betrivers FLOAT, \
-#     betus FLOAT, \
-#     bovada FLOAT, \
-#     draftkings FLOAT, \
-#     fanduel FLOAT, \
-#     lowvig FLOAT, \
-#     mybookieag FLOAT, \
-#     pointsbetus FLOAT, \
-#     superbook FLOAT, \
-#     unibet_us FLOAT, \
-#     williamhill_us FLOAT, \
-#     wynnbet FLOAT, \
-#     ballybet FLOAT, \
-#     betparx FLOAT, \
-#     espnbet FLOAT, \
-#     fliff FLOAT, \
-#     hardrockbet FLOAT, \
-#     sisportsbook FLOAT, \
-#     tipico_us FLOAT, \
-#     windcreek FLOAT,
+mydb.commit()
