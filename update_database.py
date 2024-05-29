@@ -111,31 +111,3 @@ def update_all():
     print("Updating Arbitrage Data... (2/3) ")
     update_arbitrage()
     print("Arbitrage Data Updated. (3/3) ")
-
-if __name__ == '__main__':
-    # update_data()
-    # update_arbitrage()
-
-    # cursor.execute("SELECT * FROM Events WHERE id = '949934828dfdceb424db91b212cac7b7'")
-    # print(cursor.fetchall())
-    # cursor.execute("SELECT * FROM team1odds WHERE eventID = '949934828dfdceb424db91b212cac7b7'")
-    # for x in cursor:
-    #     print(x)
-    # print("\n \n")
-    # cursor.execute("SELECT * FROM team2odds WHERE eventID = '949934828dfdceb424db91b212cac7b7'")
-    # for x in cursor:
-    #     print(x)
-
-    # cursor.execute("SELECT COUNT(*) FROM Events")
-    # print(cursor.fetchall())
-    # print("\n \n")
-    # cursor.execute("SELECT COUNT(*) FROM team1odds")
-    # print(cursor.fetchall())
-    # cursor.execute("SELECT COUNT(*) FROM team2odds")
-    # print(cursor.fetchall())
-    # cursor.execute("SELECT COUNT(*) FROM team1odds INNER JOIN team2odds ON team1odds.spread = - team2odds.spread AND team1odds.eventID = team2odds.eventID")
-    # print(cursor.fetchall())
-
-    print(get_arbitrage())
-    cursor.execute("SELECT * FROM Historical")
-    print(cursor.fetchall())

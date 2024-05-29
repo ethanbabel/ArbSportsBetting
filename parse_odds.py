@@ -68,6 +68,3 @@ def get_event_odds(sport:str, eventId: str) -> list:
                 team = outcome['name']     
                 odds.append({'bookmaker': bookmaker_key, 'price': price, 'line': point, 'team': team})
         return odds
-
-if __name__ == "__main__":
-    get_event_odds('soccer_usa_mls', '949934828dfdceb424db91b212cac7b7')

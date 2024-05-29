@@ -43,7 +43,3 @@ def send_error(error: str):
     smtp.sendmail(from_addr=SENDER, to_addrs=to, msg=msg.as_string())
 
     smtp.close()
-
-
-if __name__ == "__main__":
-    send_arbs()
