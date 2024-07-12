@@ -1,8 +1,12 @@
 import requests
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from dotenv import load_dotenv
+import os
 
-API_KEY = '7765fab0d40bbcf156b6c01896c8b364'
+load_dotenv()
+
+API_KEY = os.getenv('ODDS_API_KEY')
 SPORTS = 'upcoming'
 REGIONS = 'us,us2,uk,au,eu'
 MARKETS = 'alternate_spreads'

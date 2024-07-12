@@ -1,9 +1,13 @@
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 mydb = mysql.connector.connect(
-    host="arbsportsbettingdatabase.czcyyswyshyy.us-west-1.rds.amazonaws.com",
-    user="admin",
-    passwd="ArbSportsBettingsasha4",
+    host = os.getenv('DATABASE_HOST'),
+    user = os.getenv('DATABASE_USER'),
+    passwd= os.getenv('DATABASE_PASSWORD'),
     database="ArbSportsBetting"
 )
 
@@ -47,10 +51,10 @@ cursor.execute("CREATE TABLE Arbs (id INT NOT NULL AUTO_INCREMENT, \
     PRIMARY KEY (id), \
     FOREIGN KEY (eventID) REFERENCES Events(id))")
 
-cursor.execute("CREATE TABLE Historical (id INT NOT NULL AUTO_INCREMENT, \
-    profitPercentage FLOAT NOT NULL, \
-    dt VARCHAR(20) NOT NULL, \
-    PRIMARY KEY (id))")
+# cursor.execute("CREATE TABLE Historical (id INT NOT NULL AUTO_INCREMENT, \
+#     profitPercentage FLOAT NOT NULL, \
+#     dt VARCHAR(20) NOT NULL, \
+#     PRIMARY KEY (id))")
 
 cursor.execute("DESCRIBE Events")
 for x in cursor:

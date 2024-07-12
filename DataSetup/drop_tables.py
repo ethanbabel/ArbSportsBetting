@@ -1,9 +1,13 @@
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 mydb = mysql.connector.connect(
-    host="arbsportsbettingdatabase.czcyyswyshyy.us-west-1.rds.amazonaws.com",
-    user="admin",
-    passwd="ArbSportsBettingsasha4",
+    host = os.getenv('DATABASE_HOST'),
+    user = os.getenv('DATABASE_USER'),
+    passwd= os.getenv('DATABASE_PASSWORD'),
     database="ArbSportsBetting"
 )
 

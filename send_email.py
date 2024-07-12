@@ -3,9 +3,13 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
 import smtplib
+from dotenv import load_dotenv
+import os
 
-USERNAME_SMTP = 'AKIA3FLDXAQIIB6TPL7G'
-PASSWORD_SMTP = 'BHXSEcbqlokVc73A5qx4HdUuyQGr8XI6XTNl/nQpozsr'
+load_dotenv()
+
+USERNAME_SMTP = os.getenv('USERNAME_SMTP')
+PASSWORD_SMTP = os.getenv('PASSWORD_SMTP')
 SENDER = 'ethanbabelarbitragebetting@gmail.com'
 SENDERNAME = "Ethan Babel Arbitrage Betting"
 
