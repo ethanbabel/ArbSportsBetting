@@ -47,3 +47,21 @@ def send_error(error: str):
     smtp.sendmail(from_addr=SENDER, to_addrs=to, msg=msg.as_string())
 
     smtp.close()
+
+def send_API_limit_reached():
+    smtp = smtplib.SMTP('email-smtp.us-west-1.amazonaws.com', 587) 
+    smtp.ehlo() 
+    smtp.starttls() 
+    smtp.ehlo()
+    smtp.login(USERNAME_SMTP, PASSWORD_SMTP) 
+
+    subject = 'API Limit Reached'
+    text = 'API Limit Reached'
+    msg = MIMEMultipart()
+    msg['Subject'] = subject 
+    msg['From'] = formataddr((SENDERNAME, SENDER))
+    msg.attach(MIMEText(text)) 
+    to = ["babelethan@gmail.com"]
+    smtp.sendmail(from_addr=SENDER, to_addrs=to, msg=msg.as_string())
+
+    smtp.close()

@@ -6,11 +6,15 @@ import time
 
 def update_and_send():
     print("Updating All Data ...")
-    update_database.update_all()
-    print("Database Updated")
-    print("Sending Arbitrage Opportunites... ")
-    send_email.send_arbs()
-    print("Arbitrage Opportunites Sent. ")
+    successful = update_database.update_all()
+    if successful:
+        print("Database Updated")
+        print("Sending Arbitrage Opportunites... ")
+        send_email.send_arbs()
+        print("Arbitrage Opportunites Sent. ")
+    else:
+        send_email.send_API_limit_reached()
+        quit()
 
 times = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00',
         '06:00', '07:00', '08:00', '09:00', '10:00', '11:00',
