@@ -21,7 +21,7 @@ def send_arbs():
     smtp.login(USERNAME_SMTP, PASSWORD_SMTP) 
 
     subject = 'Arbing Opportunity'
-    text = update_database.get_arbitrage()
+    text = update_database.get_arbitrage_string()
     msg = MIMEMultipart()
     msg['Subject'] = subject 
     msg['From'] = formataddr((SENDERNAME, SENDER))

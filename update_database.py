@@ -3,6 +3,7 @@ import parse_odds
 import datetime
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 load_dotenv()
 
@@ -92,17 +93,24 @@ def save_historical_arbitrage(profit_percentage: float):
     cursor.execute("INSERT INTO Historical (profitPercentage, dt) VALUES (%s, %s)", (profit_percentage*100, dt))
     mydb.commit()
 
-def get_arbitrage() -> str:
+def get_arbitrage_string() -> str:
     arbs = ''
     max_profit_percentage = 0
     cursor.execute("SELECT * FROM Arbs")
     for arb in cursor:
-        print(arb)
         max_profit_percentage = max(max_profit_percentage, arb[8])
         if arb[8] > 0.005:
             arbs = arbs + str(arb) + '\n'
     if(max_profit_percentage >= 0.005):
         save_historical_arbitrage(max_profit_percentage)
+    return arbs
+
+def get_arbitrage_list() -> list:
+    arbs = []
+    cursor.execute("SELECT * FROM Arbs")
+    for arb in cursor:
+        if arb[8] > 0.005:
+            arbs.append(arb)
     return arbs
 
 def update_all():
@@ -120,4 +128,21 @@ def update_all():
     except TypeError:
         print("API Limit reached. ")
         return False
+
+if __name__ == "__main__":
+    data = [
+        {
+            "Sport/League": opp[1],
+            "Spread": opp[3],
+            "Line 1": opp[4],
+            "Bookmaker 1": opp[5],
+            "Line 2": opp[6],
+            "Bookmaker 2": opp[7],
+            "Return": f"{opp[8] * 100:.2f}%"  # Convert return to percentage
+        }
+        for opp in get_arbitrage_list()
+    ]
+    columns = ["Sport/League", "Spread", "Line 1", "Bookmaker 1", "Line 2", "Bookmaker 2", "Return"]
+    df = pd.DataFrame(data, columns=columns)
+    print(df)
     
