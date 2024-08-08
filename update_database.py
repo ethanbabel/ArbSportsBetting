@@ -128,21 +128,3 @@ def update_all():
     except TypeError:
         print("API Limit reached. ")
         return False
-
-if __name__ == "__main__":
-    data = [
-        {
-            "Sport/League": opp[1],
-            "Spread": opp[3],
-            "Line 1": opp[4],
-            "Bookmaker 1": opp[5],
-            "Line 2": opp[6],
-            "Bookmaker 2": opp[7],
-            "Return": f"{opp[8] * 100:.2f}%"  # Convert return to percentage
-        }
-        for opp in get_arbitrage_list()
-    ]
-    columns = ["Sport/League", "Spread", "Line 1", "Bookmaker 1", "Line 2", "Bookmaker 2", "Return"]
-    df = pd.DataFrame(data, columns=columns)
-    print(df)
-    
