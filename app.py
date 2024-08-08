@@ -11,10 +11,10 @@ columns = ["Sport/League", "Spread", "Line 1", "Bookmaker 1", "Line 2", "Bookmak
 data = [
     {
         "Sport/League": opp[1],
-        "Spread": opp[3],
-        "Line 1": opp[4],
+        "Spread": f"{opp[3]:g}",  # Format as general number
+        "Line 1": f"{opp[4]:g}",  # Format as general number
         "Bookmaker 1": opp[5],
-        "Line 2": opp[6],
+        "Line 2": f"{opp[6]:g}",  # Format as general number
         "Bookmaker 2": opp[7],
         "Return": f"{opp[8] * 100:.2f}%"  # Convert return to percentage
     }
@@ -29,5 +29,12 @@ st.title("Arbitrage Opportunities")
 # Display the DataFrame as a table
 st.table(df)
 
-# Footer
-st.markdown("## Arbitrage Opportunities Updated Daily")
+# Smaller footer text
+footer = """
+<div style="text-align: center;">
+    <p style="font-size:15px; margin-top: 20px;">Arbitrage Opportunities Updated Daily</p>
+</div>
+"""
+
+# Display the footer
+st.markdown(footer, unsafe_allow_html=True)
