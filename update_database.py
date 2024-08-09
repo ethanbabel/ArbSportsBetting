@@ -22,6 +22,7 @@ def clear_tables():
     for table in tables:
         cursor.execute(f'DELETE FROM {table}')
     cursor.execute("SET foreign_key_checks = 1") 
+    mydb.commit()
 
 def check_exists(team1: bool, eventID: str, line: float) -> bool:
     if(team1):
@@ -134,5 +135,5 @@ def update_all():
         print("API Limit reached. ")
         return False
 
-if __name__ == "__main__":
-    get_historical_average()
+def ping():
+    cursor.execute("SELECT 1")

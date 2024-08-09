@@ -15,6 +15,10 @@ def update_and_send():
     else:
         send_email.send_API_limit_reached()
 
+def keep_alive():
+    print("Keeping Alive... ")
+    update_database.ping()
+
 # times = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00',
 #         '06:00', '07:00', '08:00', '09:00', '10:00', '11:00',
 #         '12:00', '13:00', '14:30', '14:00', '15:00', '16:00', '17:00',
@@ -23,6 +27,7 @@ def update_and_send():
 #     schedule.every().day.at(t).do(update_and_send)
 
 schedule.every().day.at("00:00").do(update_and_send)
+schedule.every(10).minutes.do(keep_alive)
 
 while True:
     try:
