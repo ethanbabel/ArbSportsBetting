@@ -5,6 +5,7 @@ import update_database
 
 # Get arbitrage opportunites
 arbs = update_database.get_arbitrage_list()
+avg_return = update_database.get_historical_average()
 
 # Create a DataFrame from the sample data
 columns = ["Sport/League", "Spread", "Line 1", "Bookmaker 1", "Line 2", "Bookmaker 2", "Return"]
@@ -25,6 +26,7 @@ df = pd.DataFrame(data, columns=columns)
 
 # Streamlit app
 st.title("Arbitrage Opportunities")
+st.subheader(f"Lifetime Average Return: {round(avg_return, 2)}%")
 
 # Display the DataFrame as a table
 st.table(df)

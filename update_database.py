@@ -113,6 +113,11 @@ def get_arbitrage_list() -> list:
             arbs.append(arb)
     return arbs
 
+def get_historical_average() -> float:
+    cursor.execute("SELECT AVG(profitPercentage) FROM Historical")
+    avg = cursor.fetchall()[0][0]
+    return float(avg)
+
 def update_all():
     try:
         print("Clearing Tables... (0/3) ")
@@ -128,3 +133,6 @@ def update_all():
     except TypeError:
         print("API Limit reached. ")
         return False
+
+if __name__ == "__main__":
+    get_historical_average()
