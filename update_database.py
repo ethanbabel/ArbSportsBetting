@@ -124,8 +124,14 @@ def get_arbitrage_list() -> list:
     with get_connection() as mydb:
         with mydb.cursor() as cursor:
             cursor.execute("SELECT * FROM Arbs")
-            for arb in cursor:
+            arbing_info = cursor.fetchall()
+            for arb in arbing_info:
                 if arb[8] > 0.005:
+                    cursor.execute(f"SELECT team1, team2 FROM Events WHERE id = '{arb[2]}'")
+                    teams = cursor.fetchall()
+                    arb = list(arb)
+                    arb.append(teams[0][0])
+                    arb.append(teams[0][1])
                     arbs.append(arb)
     return arbs
 
@@ -157,3 +163,4 @@ def ping():
         with mydb.cursor() as cursor:
             cursor.execute("SELECT 1")
             cursor.fetchall()
+
