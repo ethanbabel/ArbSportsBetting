@@ -43,8 +43,10 @@ cursor.execute("CREATE TABLE Arbs (id INT NOT NULL AUTO_INCREMENT, \
     sport VARCHAR(100) Not Null, \
     eventID VARCHAR(100) NOT NULL, \
     spread FLOAT NOT NULL, \
+    teamFavorite VARCHAR(100) NOT NULL, \
     oddFavorite FLOAT NOT NULL, \
     bookFavorite VARCHAR(100) NOT NULL, \
+    teamUnderdog VARCHAR(100) NOT NULL, \
     oddUnderdog FLOAT NOT NULL, \
     bookUnderdog VARCHAR(100) NOT NULL, \
     profitPercentage FLOAT NOT NULL, \

@@ -78,7 +78,7 @@ def update_data():
 def update_arbitrage():
     with get_connection() as mydb:
         with mydb.cursor() as cursor:
-            cursor.execute("SELECT Events.id, Events.sport, team1odds.spread, team1odds.odds, team1odds.books, team2odds.odds, team2odds.books \
+            cursor.execute("SELECT Events.id, Events.sport, team1odds.spread, team1odds.odds, team1odds.books, team2odds.odds, team2odds.books, team1odds.team, team2odds.team \
                 FROM team1odds INNER JOIN team2odds ON team1odds.spread = - team2odds.spread AND team1odds.eventID = team2odds.eventID \
                 INNER JOIN Events ON team1odds.eventID = Events.id")
             for entry in cursor.fetchall():
@@ -89,13 +89,15 @@ def update_arbitrage():
                 favorite_books = list(entry[4][:-1].split(" "))
                 underdog_odds = list(entry[5][:-1].split(" "))
                 underdog_books = list(entry[6][:-1].split(" "))
+                team_favorite = entry[7]
+                team_underdog = entry[8]
                 for i in range(len(favorite_odds)):
                     for j in range(len(underdog_odds)):
                         profit_percentage = 1 - ((1.0/float(favorite_odds[i])) + (1.0/float(underdog_odds[j])))
                         if (profit_percentage > 0):
-                            cursor.execute("INSERT INTO Arbs (sport, eventID, spread, oddFavorite, bookFavorite, oddUnderdog, bookUnderdog, profitPercentage) \
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (sport, id, line, favorite_odds[i], favorite_books[i], \
-                                underdog_odds[j], underdog_books[j], profit_percentage))
+                            cursor.execute("INSERT INTO Arbs (sport, eventID, spread, teamFavorite, oddFavorite, bookFavorite, teamUnderdog, oddUnderdog, bookUnderdog, profitPercentage) \
+                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (sport, id, line, team_favorite, favorite_odds[i], favorite_books[i], \
+                                team_underdog, underdog_odds[j], underdog_books[j], profit_percentage))
             mydb.commit()
 
 def save_historical_arbitrage(profit_percentage: float):
@@ -127,11 +129,7 @@ def get_arbitrage_list() -> list:
             arbing_info = cursor.fetchall()
             for arb in arbing_info:
                 if arb[8] > 0.005:
-                    cursor.execute(f"SELECT team1, team2 FROM Events WHERE id = '{arb[2]}'")
-                    teams = cursor.fetchall()
                     arb = list(arb)
-                    arb.append(teams[0][0])
-                    arb.append(teams[0][1])
                     arbs.append(arb)
     return arbs
 
@@ -164,3 +162,6 @@ def ping():
             cursor.execute("SELECT 1")
             cursor.fetchall()
 
+if __name__ == '__main__':
+    print(get_arbitrage_list())
+    
