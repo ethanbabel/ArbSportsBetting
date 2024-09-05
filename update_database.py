@@ -114,8 +114,8 @@ def get_arbitrage_string() -> str:
         with mydb.cursor() as cursor:
             cursor.execute("SELECT * FROM Arbs")
             for arb in cursor:
-                max_profit_percentage = max(max_profit_percentage, arb[8])
-                if arb[8] > 0.005:
+                max_profit_percentage = max(max_profit_percentage, arb[10])
+                if arb[10] > 0.005:
                     arbs = arbs + str(arb) + '\n'
             if(max_profit_percentage >= 0.005):
                 save_historical_arbitrage(max_profit_percentage)
@@ -128,7 +128,7 @@ def get_arbitrage_list() -> list:
             cursor.execute("SELECT * FROM Arbs")
             arbing_info = cursor.fetchall()
             for arb in arbing_info:
-                if arb[8] > 0.005:
+                if arb[10] > 0.005:
                     arb = list(arb)
                     arbs.append(arb)
     return arbs
@@ -163,5 +163,5 @@ def ping():
             cursor.fetchall()
 
 if __name__ == '__main__':
-    print(get_arbitrage_list())
+    pass
     

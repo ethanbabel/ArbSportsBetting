@@ -37,7 +37,7 @@ st.table(df)
 # Smaller footer text
 footer = """
 <div style="text-align: center;">
-    <p style="font-size:15px; margin-top: 20px;">Arbitrage Opportunities Updated Daily at ~8pm EST</p>
+    <p style="font-size:15px; margin-top: 20px;">Arbitrage Opportunities Updated Daily at ~8 - 8:30pm EST</p>
 </div>
 """
 
