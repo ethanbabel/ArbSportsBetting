@@ -49,9 +49,9 @@ def update_data():
                     cursor.execute("INSERT INTO Events(id, sport, team1, team2, dt) VALUES(%s, %s, %s, %s, %s)", (id, sport, team1, team2, dt))
                     for odd in parse_odds.get_event_odds(sport, id):
                         sportsbook = odd['bookmaker']
-                        price = odd['price']
+                        price = float(odd['price'])
                         line = float(odd['line'])
-                        if (odd['team']==team1):
+                        if (price > 0):
                             if check_exists(True, id, line):
                                 cursor.execute(f"SELECT odds, books FROM team1odds WHERE eventID = '{id}' AND spread = {line}")
                                 sql_response = cursor.fetchone()
