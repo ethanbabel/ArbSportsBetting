@@ -51,7 +51,7 @@ def update_data():
                         sportsbook = odd['bookmaker']
                         price = float(odd['price'])
                         line = float(odd['line'])
-                        if (price > 0):
+                        if (line > 0):
                             if check_exists(True, id, line):
                                 cursor.execute(f"SELECT odds, books FROM team1odds WHERE eventID = '{id}' AND spread = {line}")
                                 sql_response = cursor.fetchone()
