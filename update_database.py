@@ -44,6 +44,8 @@ def update_data():
                 for event in parse_odds.get_event_ids(sport):
                     id = event['id']
                     dt = event['dt']
+                    team1 = event['team1']
+                    team2 = event['team2']
                     cursor.execute("INSERT INTO Events(id, sport, team1, team2, dt) VALUES(%s, %s, %s, %s, %s)", (id, sport, team1, team2, dt))
                     for odd in parse_odds.get_event_odds(sport, id):
                         team = odd['team']
