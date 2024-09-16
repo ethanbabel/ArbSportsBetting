@@ -50,6 +50,7 @@ cursor.execute("CREATE TABLE Arbs (id INT NOT NULL AUTO_INCREMENT, \
     oddUnderdog FLOAT NOT NULL, \
     bookUnderdog VARCHAR(100) NOT NULL, \
     profitPercentage FLOAT NOT NULL, \
+    UNIQUE(sport, eventID, spread, bookFavorite, bookUnderdog), \
     PRIMARY KEY (id), \
     FOREIGN KEY (eventID) REFERENCES Events(id))")
 

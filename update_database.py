@@ -168,4 +168,4 @@ def ping():
             cursor.fetchall()
 
 if __name__ == '__main__':
-    pass
+    update_arbitrage()
