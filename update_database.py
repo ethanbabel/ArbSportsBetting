@@ -43,11 +43,10 @@ def update_data():
             for sport in parse_odds.get_in_season_sports():
                 for event in parse_odds.get_event_ids(sport):
                     id = event['id']
-                    team1 = event['team1']
-                    team2 = event['team2']
                     dt = event['dt']
                     cursor.execute("INSERT INTO Events(id, sport, team1, team2, dt) VALUES(%s, %s, %s, %s, %s)", (id, sport, team1, team2, dt))
                     for odd in parse_odds.get_event_odds(sport, id):
+                        team = odd['team']
                         sportsbook = odd['bookmaker']
                         price = float(odd['price'])
                         line = float(odd['line'])
@@ -61,7 +60,7 @@ def update_data():
                             else:
                                 price = str(price) + " "
                                 sportsbook = sportsbook + " "
-                                cursor.execute("INSERT INTO team1odds (eventID, team, spread, odds, books) VALUES (%s, %s, %s, %s, %s)", (id, team1, line, price, sportsbook))
+                                cursor.execute("INSERT INTO team1odds (eventID, team, spread, odds, books) VALUES (%s, %s, %s, %s, %s)", (id, team, line, price, sportsbook))
                         else:
                             if check_exists(False, id, line):
                                 cursor.execute(f"SELECT odds, books FROM team2odds WHERE eventID = '{id}' AND spread = {line}")
@@ -72,7 +71,7 @@ def update_data():
                             else:
                                 price = str(price) + " "
                                 sportsbook = sportsbook + " "
-                                cursor.execute("INSERT INTO team2odds (eventID, team, spread, odds, books) VALUES (%s, %s, %s, %s, %s)", (id, team2, line, price, sportsbook))
+                                cursor.execute("INSERT INTO team2odds (eventID, team, spread, odds, books) VALUES (%s, %s, %s, %s, %s)", (id, team, line, price, sportsbook))
             mydb.commit()
 
 def update_arbitrage():
@@ -82,6 +81,7 @@ def update_arbitrage():
                 FROM team1odds INNER JOIN team2odds ON team1odds.spread = - team2odds.spread AND team1odds.eventID = team2odds.eventID \
                 INNER JOIN Events ON team1odds.eventID = Events.id")
             for entry in cursor.fetchall():
+                print(entry)
                 id = entry[0]
                 sport = entry[1]
                 line = entry[2]
@@ -163,5 +163,5 @@ def ping():
             cursor.fetchall()
 
 if __name__ == '__main__':
-    pass
+    update_all()
     

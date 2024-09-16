@@ -72,3 +72,4 @@ def get_event_odds(sport:str, eventId: str) -> list:
                 team = outcome['name']     
                 odds.append({'bookmaker': bookmaker_key, 'price': price, 'line': point, 'team': team})
         return odds
+    
