@@ -8,12 +8,12 @@ arbs = update_database.get_arbitrage_list()
 avg_return = update_database.get_historical_average()
 
 # Create a DataFrame from the sample data
-columns = ["Sport/League", "Favorite", "Underdog", "Spread", "Line 1", "Bookmaker 1", "Line 2", "Bookmaker 2", "Return"]
+columns = ["Sport/League", "Underdog", "Favorite", "Spread", "Line 1", "Bookmaker 1", "Line 2", "Bookmaker 2", "Return"]
 data = [
     {
         "Sport/League": opp[1],
-        "Favorite": opp[4],
-        "Underdog": opp[7],
+        "Underdog": opp[4],
+        "Favorite": opp[7],
         "Spread": f"{opp[3]:g}",  # Format as general number
         "Line 1": f"{opp[5]:g}",  # Format as general number
         "Bookmaker 1": opp[6],
